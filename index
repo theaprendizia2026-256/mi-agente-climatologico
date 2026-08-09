@@ -106,7 +106,7 @@
         // Configuración de APIs
         const WEATHER_API_KEY = 'eff15a046767461d810143451252301';
         // Reemplaza con tu llave de OpenRouter guardada en Simplenote:
-        const OPENROUTER_API_KEY = 'TU_OPENROUTER_API_KEY_AQUI'; 
+        const OPENROUTER_API_KEY = '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'; 
 
         async function ejecutarAgente() {
             const ciudad = document.getElementById('citySelect').value;
