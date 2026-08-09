@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agente Clima - Chillán / Concepción</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #000000;
+            --secondary-color: #333333;
+            --background-color: #ffffff;
+            --text-color: #000000;
+            --error-color: #ff0000;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0; padding: 0;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 500px; width: 90%;
+            padding: 30px;
+            background-color: var(--background-color);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            border: 2px solid var(--primary-color);
+        }
+
+        h1 { text-align: center; margin-bottom: 20px; font-weight: 700; font-size: 2rem; }
+
+        .selector-group {
+            display: flex; gap: 10px; margin-bottom: 20px;
+        }
+
+        select, button {
+            padding: 12px; font-size: 16px;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+        }
+
+        select { flex-grow: 1; font-family: inherit; }
+
+        button {
+            background-color: var(--primary-color);
+            color: var(--background-color);
+            cursor: pointer; font-weight: 600;
+        }
+
+        button:hover { background-color: var(--secondary-color); }
+        button:disabled { background-color: #cccccc; cursor: not-allowed; }
+
+        .weather-info {
+            text-align: center; margin-top: 20px;
+            padding: 20px; border-radius: 12px;
+            border: 1px solid var(--primary-color);
+        }
+
+        .temperature { font-size: 3rem; font-weight: 700; }
+        .condition { font-size: 1.2rem; color: var(--secondary-color); }
+
+        .agent-box {
+            margin-top: 20px; padding: 15px;
+            background-color: #f5f5f5; border-left: 4px solid var(--primary-color);
+            border-radius: 4px; font-size: 0.95rem; line-height: 1.4;
+        }
+
+        .agent-title { font-weight: 700; margin-bottom: 5px; text-transform: uppercase; font-size: 0.8rem; }
+        .error { color: var(--error-color); text-align: center; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Agente Clima Ñuble/Bío Bío</h1>
+        
+        <div class="selector-group">
+            <select id="citySelect">
+                <option value="Chillan, Chile">Chillán</option>
+                <option value="Concepcion, Chile">Concepción</option>
+            </select>
+            <button id="consultBtn" onclick="ejecutarAgente()">Consultar Agente</button>
+        </div>
+
+        <div id="errorMsg" class="error"></div>
+
+        <div id="weatherDisplay" class="weather-info" style="display:none;">
+            <h2 id="cityName"></h2>
+            <div class="temperature" id="tempC"></div>
+            <div class="condition" id="condText"></div>
+            
+            <!-- Caja donde razona el Agente IA -->
+            <div class="agent-box">
+                <div class="agent-title">🤖 Recomendación del Agente (DeepSeek IA)</div>
+                <div id="agentRecommendation">Analizando datos meteorológicos...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuración de APIs
+        const WEATHER_API_KEY = 'eff15a046767461d810143451252301';
+        // Reemplaza con tu llave de OpenRouter guardada en Simplenote:
+        const OPENROUTER_API_KEY = 'TU_OPENROUTER_API_KEY_AQUI'; 
+
+        async function ejecutarAgente() {
+            const ciudad = document.getElementById('citySelect').value;
+            const btn = document.getElementById('consultBtn');
+            const errorDiv = document.getElementById('errorMsg');
+            const agentDiv = document.getElementById('agentRecommendation');
+            
+            btn.disabled = true;
+            errorDiv.textContent = '';
+            agentDiv.textContent = 'El cerebro de la IA está analizando si necesitas abrigo o paraguas...';
+            document.getElementById('weatherDisplay').style.display = 'block';
+
+            try {
+                // 1. EL CUERPO: Obtener datos reales del clima
+                const resWeather = await fetch(`https://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${ciudad}&lang=es`);
+                const dataWeather = await resWeather.json();
+
+                if (dataWeather.error) throw new Error(dataWeather.error.message);
+
+                const temp = dataWeather.current.temp_c;
+                const condicion = dataWeather.current.condition.text;
+                const humedad = dataWeather.current.humidity;
+
+                // Mostrar datos básicos
+                document.getElementById('cityName').textContent = dataWeather.location.name;
+                document.getElementById('tempC').textContent = `${temp}°C`;
+                document.getElementById('condText').textContent = condicion;
+
+                // 2. EL CEREBRO: Consultar a la IA China (DeepSeek) vía OpenRouter
+                const promptAgente = `Eres un asistente meteorológico para la zona de ${ciudad}. 
+                Temperatura actual: ${temp}°C. Condición: ${condicion}. Humedad: ${humedad}%.
+                En máximo 2 frases cortas, dile al usuario exactamente qué vestir o llevar hoy (ej: abrigo, paraguas, corta viento, o ropa ligera). Sé directo.`;
+
+                const resIA = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: 'deepseek/deepseek-r1:free',
+                        messages: [{ role: 'user', content: promptAgente }]
+                    })
+                });
+
+                const dataIA = await resIA.json();
+                
+                if (dataIA.choices && dataIA.choices[0]) {
+                    agentDiv.textContent = dataIA.choices[0].message.content;
+                } else {
+                    // Respaldo si la llamada gratis se satura
+                    agentDiv.textContent = temp < 15 ? 'Hace frío en la zona. Te recomiendo llevar abrigo pesado.' : 'Temperatura agradable, viste ropa cómoda.';
+                }
+
+            } catch (err) {
+                errorDiv.textContent = 'Error: ' + err.message;
+            } finally {
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
