@@ -147,7 +147,347 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        model: 'google/gemma-4-26b-a4b-it:free',
+                        model: '<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agente Clima - Chillán / Concepción</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #000000;
+            --secondary-color: #333333;
+            --background-color: #ffffff;
+            --text-color: #000000;
+            --error-color: #ff0000;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0; padding: 0;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 500px; width: 90%;
+            padding: 30px;
+            background-color: var(--background-color);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            border: 2px solid var(--primary-color);
+        }
+
+        h1 { text-align: center; margin-bottom: 20px; font-weight: 700; font-size: 2rem; }
+
+        .selector-group {
+            display: flex; gap: 10px; margin-bottom: 20px;
+        }
+
+        select, button {
+            padding: 12px; font-size: 16px;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+        }
+
+        select { flex-grow: 1; font-family: inherit; }
+
+        button {
+            background-color: var(--primary-color);
+            color: var(--background-color);
+            cursor: pointer; font-weight: 600;
+        }
+
+        button:hover { background-color: var(--secondary-color); }
+        button:disabled { background-color: #cccccc; cursor: not-allowed; }
+
+        .weather-info {
+            text-align: center; margin-top: 20px;
+            padding: 20px; border-radius: 12px;
+            border: 1px solid var(--primary-color);
+        }
+
+        .temperature { font-size: 3rem; font-weight: 700; }
+        .condition { font-size: 1.2rem; color: var(--secondary-color); }
+
+        .agent-box {
+            margin-top: 20px; padding: 15px;
+            background-color: #f5f5f5; border-left: 4px solid var(--primary-color);
+            border-radius: 4px; font-size: 0.95rem; line-height: 1.4;
+            white-space: pre-line; /* Para respetar los saltos de línea de la décima */
+        }
+
+        .agent-title { font-weight: 700; margin-bottom: 5px; text-transform: uppercase; font-size: 0.8rem; }
+        .error { color: var(--error-color); text-align: center; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Agente Clima Ñuble/Bío Bío</h1>
+        
+        <div class="selector-group">
+            <select id="citySelect">
+                <option value="lat=-36.60&lon=-72.10&name=Chillán">Chillán</option>
+                <option value="lat=-36.82&lon=-73.05&name=Concepción">Concepción</option>
+            </select>
+            <button id="consultBtn" onclick="ejecutarAgente()">Consultar Agente</button>
+        </div>
+
+        <div id="errorMsg" class="error"></div>
+
+        <div id="weatherDisplay" class="weather-info" style="display:none;">
+            <h2 id="cityName"></h2>
+            <div class="temperature" id="tempC"></div>
+            <div class="condition" id="condText"></div>
+            
+            <!-- Caja donde razona el Agente IA -->
+            <div class="agent-box">
+                <div class="agent-title">🤖 Recomendación del Agente (Gemma IA)</div>
+                <div id="agentRecommendation">Analizando datos meteorológicos...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const OPENROUTER_API_KEY = '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'; 
+
+        async function ejecutarAgente() {
+            const btn = document.getElementById('consultBtn');
+            const errorDiv = document.getElementById('errorMsg');
+            const agentDiv = document.getElementById('agentRecommendation');
+            
+            btn.disabled = true;
+            errorDiv.textContent = '';
+            agentDiv.textContent = 'El cerebro de la IA está analizando la mejor recomendación...';
+            document.getElementById('weatherDisplay').style.display = 'block';
+
+            try {
+                // 1. EL CUERPO: Obtener datos de Open-Meteo
+                const selectedValue = document.getElementById('citySelect').value;
+                const params = new URLSearchParams(selectedValue);
+                const lat = params.get('lat');
+                const lon = params.get('lon');
+                const nombreCiudad = params.get('name');
+
+                const urlOpenMeteo = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m&timezone=auto&models=best_match`;
+                
+                const resWeather = await fetch(urlOpenMeteo);
+                const dataWeather = await resWeather.json();
+
+                const temp = dataWeather.current.temperature_2m;
+                const humedad = dataWeather.current.relative_humidity_2m;
+                const condicion = "Tiempo actual";
+
+                document.getElementById('cityName').textContent = nombreCiudad;
+                document.getElementById('tempC').textContent = `${temp}°C`;
+                document.getElementById('condText').textContent = `Humedad: ${humedad}%`;
+
+                // 2. EL CEREBRO: Consultar a Gemma vía OpenRouter
+                const promptAgente = `Eres un asistente meteorológico folclórico para la zona de ${nombreCiudad}. Temperatura actual: ${temp}°C. Condición: ${condicion}. Humedad: ${humedad}%. Entrega tu recomendación sobre qué vestir o llevar hoy exclusivamente en forma de una décima poética tradicional (10 versos cortos). Sé directo, creativo y mantén el tono de la zona.`;
+
+                const resIA = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: '<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agente Clima - Chillán / Concepción</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #000000;
+            --secondary-color: #333333;
+            --background-color: #ffffff;
+            --text-color: #000000;
+            --error-color: #ff0000;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0; padding: 0;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 500px; width: 90%;
+            padding: 30px;
+            background-color: var(--background-color);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            border: 2px solid var(--primary-color);
+        }
+
+        h1 { text-align: center; margin-bottom: 20px; font-weight: 700; font-size: 2rem; }
+
+        .selector-group {
+            display: flex; gap: 10px; margin-bottom: 20px;
+        }
+
+        select, button {
+            padding: 12px; font-size: 16px;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+        }
+
+        select { flex-grow: 1; font-family: inherit; }
+
+        button {
+            background-color: var(--primary-color);
+            color: var(--background-color);
+            cursor: pointer; font-weight: 600;
+        }
+
+        button:hover { background-color: var(--secondary-color); }
+        button:disabled { background-color: #cccccc; cursor: not-allowed; }
+
+        .weather-info {
+            text-align: center; margin-top: 20px;
+            padding: 20px; border-radius: 12px;
+            border: 1px solid var(--primary-color);
+        }
+
+        .temperature { font-size: 3rem; font-weight: 700; }
+        .condition { font-size: 1.2rem; color: var(--secondary-color); }
+
+        .agent-box {
+            margin-top: 20px; padding: 15px;
+            background-color: #f5f5f5; border-left: 4px solid var(--primary-color);
+            border-radius: 4px; font-size: 0.95rem; line-height: 1.4;
+            white-space: pre-line; /* Para respetar los saltos de línea de la décima */
+        }
+
+        .agent-title { font-weight: 700; margin-bottom: 5px; text-transform: uppercase; font-size: 0.8rem; }
+        .error { color: var(--error-color); text-align: center; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Agente Clima Ñuble/Bío Bío</h1>
+        
+        <div class="selector-group">
+            <select id="citySelect">
+                <option value="lat=-36.60&lon=-72.10&name=Chillán">Chillán</option>
+                <option value="lat=-36.82&lon=-73.05&name=Concepción">Concepción</option>
+            </select>
+            <button id="consultBtn" onclick="ejecutarAgente()">Consultar Agente</button>
+        </div>
+
+        <div id="errorMsg" class="error"></div>
+
+        <div id="weatherDisplay" class="weather-info" style="display:none;">
+            <h2 id="cityName"></h2>
+            <div class="temperature" id="tempC"></div>
+            <div class="condition" id="condText"></div>
+            
+            <!-- Caja donde razona el Agente IA -->
+            <div class="agent-box">
+                <div class="agent-title">🤖 Recomendación del Agente (Gemma IA)</div>
+                <div id="agentRecommendation">Analizando datos meteorológicos...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const OPENROUTER_API_KEY = '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'; 
+
+        async function ejecutarAgente() {
+            const btn = document.getElementById('consultBtn');
+            const errorDiv = document.getElementById('errorMsg');
+            const agentDiv = document.getElementById('agentRecommendation');
+            
+            btn.disabled = true;
+            errorDiv.textContent = '';
+            agentDiv.textContent = 'El cerebro de la IA está analizando la mejor recomendación...';
+            document.getElementById('weatherDisplay').style.display = 'block';
+
+            try {
+                // 1. EL CUERPO: Obtener datos de Open-Meteo
+                const selectedValue = document.getElementById('citySelect').value;
+                const params = new URLSearchParams(selectedValue);
+                const lat = params.get('lat');
+                const lon = params.get('lon');
+                const nombreCiudad = params.get('name');
+
+                const urlOpenMeteo = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m&timezone=auto&models=best_match`;
+                
+                const resWeather = await fetch(urlOpenMeteo);
+                const dataWeather = await resWeather.json();
+
+                const temp = dataWeather.current.temperature_2m;
+                const humedad = dataWeather.current.relative_humidity_2m;
+                const condicion = "Tiempo actual";
+
+                document.getElementById('cityName').textContent = nombreCiudad;
+                document.getElementById('tempC').textContent = `${temp}°C`;
+                document.getElementById('condText').textContent = `Humedad: ${humedad}%`;
+
+                // 2. EL CEREBRO: Consultar a Gemma vía OpenRouter
+                const promptAgente = `Eres un asistente meteorológico folclórico para la zona de ${nombreCiudad}. Temperatura actual: ${temp}°C. Condición: ${condicion}. Humedad: ${humedad}%. Entrega tu recomendación sobre qué vestir o llevar hoy exclusivamente en forma de una décima poética tradicional (10 versos cortos). Sé directo, creativo y mantén el tono de la zona.`;
+
+                const resIA = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: 'meta-llama/llama-3.3-70b-instruct:free',
+                        messages: [{ role: 'user', content: promptAgente }]
+                    })
+                });
+
+                const dataIA = await resIA.json();
+                
+                if (dataIA.choices && dataIA.choices[0]) {
+                    agentDiv.textContent = dataIA.choices[0].message.content;
+                } else {
+                    agentDiv.textContent = temp < 15 ? 'Hace frío en la zona. Te recomiendo llevar abrigo pesado.' : 'Temperatura agradable, viste ropa cómoda.';
+                }
+
+            } catch (err) {
+                errorDiv.textContent = 'Error: ' + err.message;
+            } finally {
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>',
+                        messages: [{ role: 'user', content: promptAgente }]
+                    })
+                });
+
+                const dataIA = await resIA.json();
+                
+                if (dataIA.choices && dataIA.choices[0]) {
+                    agentDiv.textContent = dataIA.choices[0].message.content;
+                } else {
+                    agentDiv.textContent = temp < 15 ? 'Hace frío en la zona. Te recomiendo llevar abrigo pesado.' : 'Temperatura agradable, viste ropa cómoda.';
+                }
+
+            } catch (err) {
+                errorDiv.textContent = 'Error: ' + err.message;
+            } finally {
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>',
                         messages: [{ role: 'user', content: promptAgente }]
                     })
                 });
