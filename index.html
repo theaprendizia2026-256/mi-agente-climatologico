@@ -113,73 +113,66 @@
         </div>
     </div>
 
-    <script>
-        const OPENROUTER_API_KEY = 'TU_API_KEY_AQUI'; 
+   <script>
+    async function ejecutarAgente() {
+        const btn = document.getElementById('consultBtn');
+        const errorDiv = document.getElementById('errorMsg');
+        const agentDiv = document.getElementById('agentRecommendation');
+        
+        btn.disabled = true;
+        errorDiv.textContent = '';
+        agentDiv.textContent = 'Generando décima del clima...';
+        document.getElementById('weatherDisplay').style.display = 'block';
 
-        async function ejecutarAgente() {
-            const btn = document.getElementById('consultBtn');
-            const errorDiv = document.getElementById('errorMsg');
-            const agentDiv = document.getElementById('agentRecommendation');
+        try {
+            const selectedValue = document.getElementById('citySelect').value;
+            const params = new URLSearchParams(selectedValue);
+            const lat = params.get('lat');
+            const lon = params.get('lon');
+            const nombreCiudad = params.get('name');
+
+            // 1. Clima directo desde Open-Meteo
+            const urlOpenMeteo = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m&timezone=auto&models=best_match`;
             
-            btn.disabled = true;
-            errorDiv.textContent = '';
-            agentDiv.textContent = 'Generando décima poética con la IA...';
-            document.getElementById('weatherDisplay').style.display = 'block';
+            const resWeather = await fetch(urlOpenMeteo);
+            const dataWeather = await resWeather.json();
 
-            try {
-                const selectedValue = document.getElementById('citySelect').value;
-                const params = new URLSearchParams(selectedValue);
-                const lat = params.get('lat');
-                const lon = params.get('lon');
-                const nombreCiudad = params.get('name');
+            const temp = dataWeather.current.temperature_2m;
+            const humedad = dataWeather.current.relative_humidity_2m;
 
-                const urlOpenMeteo = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m&timezone=auto&models=best_match`;
-                
-                const resWeather = await fetch(urlOpenMeteo);
-                const dataWeather = await resWeather.json();
+            const ahora = new Date();
+            const horaFormateada = ahora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
-                const temp = dataWeather.current.temperature_2m;
-                const humedad = dataWeather.current.relative_humidity_2m;
+            document.getElementById('cityName').textContent = nombreCiudad;
+            document.getElementById('tempC').textContent = `${temp}°C`;
+            document.getElementById('condText').textContent = `Humedad: ${humedad}%`;
+            document.getElementById('updateTime').textContent = `Actualizado a las: ${horaFormateada}`;
 
-                // Capturar y formatear hora local
-                const ahora = new Date();
-                const horaFormateada = ahora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            // 2. Consulta segura a nuestro Backend Serverless (Sin API Key expuesta)
+            const resIA = await fetch('/api/agente', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nombreCiudad, temp, humedad })
+            });
 
-                document.getElementById('cityName').textContent = nombreCiudad;
-                document.getElementById('tempC').textContent = `${temp}°C`;
-                document.getElementById('condText').textContent = `Humedad: ${humedad}%`;
-                document.getElementById('updateTime').textContent = `Actualizado a las: ${horaFormateada}`;
-
-                const promptAgente = `Eres un asistente meteorológico folclórico para la zona de ${nombreCiudad}. Temperatura actual: ${temp}°C. Humedad: ${humedad}%. Entrega tu recomendación sobre qué vestir o llevar hoy exclusivamente en forma de una décima poética tradicional (10 versos octosílabos). Sé directo, creativo y mantén el tono de la zona.`;
-
-                const resIA = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        model: 'google/gemma-4-26b-a4b-it:free',
-                        messages: [{ role: 'user', content: promptAgente }]
-                    })
-                });
-
-                const dataIA = await resIA.json();
-                
-                if (dataIA.choices && dataIA.choices[0] && dataIA.choices[0].message) {
-                    agentDiv.textContent = dataIA.choices[0].message.content;
-                } else if (dataIA.error) {
-                    agentDiv.textContent = `Error API OpenRouter: ${dataIA.error.message || JSON.stringify(dataIA.error)}`;
-                } else {
-                    agentDiv.textContent = `Respuesta inesperada: ${JSON.stringify(dataIA)}`;
-                }
-
-            } catch (err) {
-                errorDiv.textContent = 'Error de conexión: ' + err.message;
-            } finally {
-                btn.disabled = false;
+            const dataIA = await resIA.json();
+            
+            if (dataIA.choices && dataIA.choices[0] && dataIA.choices[0].message) {
+                agentDiv.textContent = dataIA.choices[0].message.content;
+            } else if (dataIA.error) {
+                agentDiv.textContent = `Error del servidor: ${dataIA.error.message || JSON.stringify(dataIA.error)}`;
+            } else {
+                agentDiv.textContent = `Respuesta inesperada: ${JSON.stringify(dataIA)}`;
             }
+
+        } catch (err) {
+            errorDiv.textContent = 'Error de conexión: ' + err.message;
+        } finally {
+            btn.disabled = false;
         }
-    </script>
+    }
+</script>
 </body>
 </html>
