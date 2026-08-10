@@ -138,9 +138,9 @@
               document.getElementById('tempC').textContent = `${temp}°C`;
               document.getElementById('condText').textContent = `Humedad: ${humedad}%`;
                 // 2. EL CEREBRO: Consultar a la IA China (DeepSeek) vía OpenRouter
-                const promptAgente = `Eres un asistente meteorológico para la zona de ${ciudad}. 
-                Temperatura actual: ${temp}°C. Condición: ${condicion}. Humedad: ${humedad}%.
-                En máximo 2 frases cortas, dile al usuario exactamente qué vestir o llevar hoy (ej: abrigo, paraguas, corta viento, o ropa ligera). Sé directo.`;
+                const promptAgente = `Eres un asistente meteorológico folclórico para la zona de ${nombreCiudad}. 
+Temperatura                           actual: ${temp}°C. Condición: ${condicion}. Humedad: ${humedad}%.
+Entrega tu                            recomendación sobre qué vestir o llevar hoy exclusivamente en forma de una décima poética tradicional (10 versos cortos). Sé directo, creativo y mantén el tono de la zona.`;
 
                 const resIA = await fetch('https://openrouter.ai/api/v1/chat/completions', {
                     method: 'POST',
@@ -148,10 +148,10 @@
                         'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({
-                        model: 'deepseek/deepseek-r1:free',
-                        messages: [{ role: 'user', content: promptAgente }]
-                    })
+                   body: JSON.stringify({
+                   model: 'google/gemma-4-26b-a4b-it:free',
+                   messages: [{ role: 'user', content: promptAgente }]
+                 })
                 });
 
                 const dataIA = await resIA.json();
