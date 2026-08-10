@@ -7,11 +7,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #000000;
-            --secondary-color: #333333;
-            --background-color: #ffffff;
-            --text-color: #000000;
-            --error-color: #ff0000;
+            --primary-color: #ffffff;
+            --secondary-color: #a0a0a0;
+            --background-color: #0d0d0d;
+            --card-bg: #161616;
+            --agent-bg: #1f1f1f;
+            --border-color: #333333;
+            --text-color: #f0f0f0;
+            --error-color: #ff5555;
         }
 
         body {
@@ -26,13 +29,13 @@
         .container {
             max-width: 500px; width: 90%;
             padding: 30px;
-            background-color: var(--background-color);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background-color: var(--card-bg);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             border-radius: 20px;
-            border: 2px solid var(--primary-color);
+            border: 1px solid var(--border-color);
         }
 
-        h1 { text-align: center; margin-bottom: 20px; font-weight: 700; font-size: 2rem; }
+        h1 { text-align: center; margin-bottom: 20px; font-weight: 700; font-size: 1.8rem; color: var(--primary-color); }
 
         .selector-group {
             display: flex; gap: 10px; margin-bottom: 20px;
@@ -40,39 +43,45 @@
 
         select, button {
             padding: 12px; font-size: 16px;
-            border: 2px solid var(--primary-color);
+            border: 1px solid var(--border-color);
             border-radius: 10px;
+            background-color: var(--background-color);
+            color: var(--text-color);
         }
 
-        select { flex-grow: 1; font-family: inherit; }
+        select { flex-grow: 1; font-family: inherit; outline: none; }
 
         button {
             background-color: var(--primary-color);
             color: var(--background-color);
+            border: none;
             cursor: pointer; font-weight: 600;
+            transition: opacity 0.2s;
         }
 
-        button:hover { background-color: var(--secondary-color); }
-        button:disabled { background-color: #cccccc; cursor: not-allowed; }
+        button:hover { opacity: 0.9; }
+        button:disabled { background-color: #444444; color: #888888; cursor: not-allowed; }
 
         .weather-info {
             text-align: center; margin-top: 20px;
             padding: 20px; border-radius: 12px;
-            border: 1px solid var(--primary-color);
+            border: 1px solid var(--border-color);
+            background-color: var(--background-color);
         }
 
-        .temperature { font-size: 3rem; font-weight: 700; }
-        .condition { font-size: 1.2rem; color: var(--secondary-color); }
+        .temperature { font-size: 3rem; font-weight: 700; color: var(--primary-color); }
+        .condition { font-size: 1rem; color: var(--secondary-color); }
+        .time-stamp { font-size: 0.8rem; color: var(--secondary-color); margin-top: 5px; font-style: italic; }
 
         .agent-box {
             margin-top: 20px; padding: 15px;
-            background-color: #f5f5f5; border-left: 4px solid var(--primary-color);
-            border-radius: 4px; font-size: 0.95rem; line-height: 1.4;
-            white-space: pre-line;
-            text-align: left;
+            background-color: var(--agent-bg);
+            border-left: 4px solid var(--primary-color);
+            border-radius: 4px; font-size: 0.95rem; line-height: 1.5;
+            white-space: pre-line; text-align: left;
         }
 
-        .agent-title { font-weight: 700; margin-bottom: 5px; text-transform: uppercase; font-size: 0.8rem; }
+        .agent-title { font-weight: 700; margin-bottom: 8px; text-transform: uppercase; font-size: 0.8rem; color: var(--secondary-color); }
         .error { color: var(--error-color); text-align: center; margin-top: 10px; font-weight: 600; }
     </style>
 </head>
@@ -95,6 +104,7 @@
             <h2 id="cityName"></h2>
             <div class="temperature" id="tempC"></div>
             <div class="condition" id="condText"></div>
+            <div class="time-stamp" id="updateTime"></div>
             
             <div class="agent-box">
                 <div class="agent-title">🤖 Recomendación del Agente (Gemma IA)</div>
@@ -131,9 +141,14 @@
                 const temp = dataWeather.current.temperature_2m;
                 const humedad = dataWeather.current.relative_humidity_2m;
 
+                // Capturar y formatear hora local
+                const ahora = new Date();
+                const horaFormateada = ahora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
                 document.getElementById('cityName').textContent = nombreCiudad;
                 document.getElementById('tempC').textContent = `${temp}°C`;
                 document.getElementById('condText').textContent = `Humedad: ${humedad}%`;
+                document.getElementById('updateTime').textContent = `Actualizado a las: ${horaFormateada}`;
 
                 const promptAgente = `Eres un asistente meteorológico folclórico para la zona de ${nombreCiudad}. Temperatura actual: ${temp}°C. Humedad: ${humedad}%. Entrega tu recomendación sobre qué vestir o llevar hoy exclusivamente en forma de una décima poética tradicional (10 versos octosílabos). Sé directo, creativo y mantén el tono de la zona.`;
 
