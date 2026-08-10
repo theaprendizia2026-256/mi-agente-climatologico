@@ -10,8 +10,17 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: 'API Key no configurada en el servidor' });
     }
 
-    const promptAgente = `Eres un asistente meteorológico folclórico para la zona de ${nombreCiudad}. Temperatura actual: ${temp}°C. Humedad: ${humedad}%. Entrega tu recomendación sobre qué vestir o llevar hoy exclusivamente en forma de una décima espinela tradicional (10 versos octosílabos). Sé directo, creativo y mantén el tono de la zona.`;
+const promptAgente = `Eres un poeta y asistente meteorológico folclórico de la zona de ${nombreCiudad}. 
+Temperatura actual: ${temp}°C. Humedad: ${humedad}%. 
 
+Entrega tu recomendación sobre cómo vestir hoy redactando EXCLUSIVAMENTE una Décima Espinela clásica respetando estrictamente estas reglas métricas:
+1. Exactamente 10 versos octosílabos (8 sílabas poéticas por verso).
+2. Esquema de rima consonante obligatorio: A-B-B-A-A-C-C-D-D-C.
+   - Verso 1 rima con 4 y 5 (A)
+   - Verso 2 rima con 3 (B)
+   - Verso 6 rima con 7 y 10 (C)
+   - Verso 8 rima con 9 (D)
+3. Lenguaje folclórico chileno directo, astuto y enfocado en el clima actual.`;
     try {
         const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
             method: 'POST',
