@@ -73,7 +73,7 @@
         }
 
         .agent-title { font-weight: 700; margin-bottom: 5px; text-transform: uppercase; font-size: 0.8rem; }
-        .error { color: var(--error-color); text-align: center; margin-top: 10px; }
+        .error { color: var(--error-color); text-align: center; margin-top: 10px; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -96,7 +96,6 @@
             <div class="temperature" id="tempC"></div>
             <div class="condition" id="condText"></div>
             
-            <!-- Caja donde razona el Agente IA -->
             <div class="agent-box">
                 <div class="agent-title">🤖 Recomendación del Agente (IA)</div>
                 <div id="agentRecommendation">Analizando datos meteorológicos...</div>
@@ -114,11 +113,11 @@
             
             btn.disabled = true;
             errorDiv.textContent = '';
-            agentDiv.textContent = 'El cerebro de la IA está analizando si necesitas abrigo o paraguas...';
+            agentDiv.textContent = 'Generando décima poética con la IA...';
             document.getElementById('weatherDisplay').style.display = 'block';
 
             try {
-                // 1. EL CUERPO: Obtener datos reales de Open-Meteo
+                // 1. Obtener datos de Open-Meteo
                 const selectedValue = document.getElementById('citySelect').value;
                 const params = new URLSearchParams(selectedValue);
                 const lat = params.get('lat');
@@ -138,7 +137,7 @@
                 document.getElementById('tempC').textContent = `${temp}°C`;
                 document.getElementById('condText').textContent = `Humedad: ${humedad}%`;
 
-                // 2. EL CEREBRO: Consultar a LLaMA 3.3 70B vía OpenRouter
+                // 2. Consulta directa a la API
                 const promptAgente = `Eres un asistente meteorológico folclórico para la zona de ${nombreCiudad}. Temperatura actual: ${temp}°C. Condición: ${condicion}. Humedad: ${humedad}%. Entrega tu recomendación sobre qué vestir o llevar hoy exclusivamente en forma de una décima poética tradicional (10 versos cortos). Sé directo, creativo y mantén el tono de la zona.`;
 
                 const resIA = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -148,22 +147,24 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        model: 'meta-llama/llama-3.3-70b-instruct:free',
+                        model: 'qwen/qwen-2.5-72b-instruct:free',
                         messages: [{ role: 'user', content: promptAgente }]
                     })
                 });
 
                 const dataIA = await resIA.json();
                 
-                if (dataIA.choices && dataIA.choices[0]) {
+                if (dataIA.choices && dataIA.choices[0] && dataIA.choices[0].message) {
                     agentDiv.textContent = dataIA.choices[0].message.content;
+                } else if (dataIA.error) {
+                    // Si la API responde un error formal, lo mostramos directo
+                    agentDiv.textContent = `Error API OpenRouter: ${dataIA.error.message || JSON.stringify(dataIA.error)}`;
                 } else {
-                    console.error("Respuesta de OpenRouter:", dataIA);
-                    agentDiv.textContent = temp < 15 ? 'Hace frío en la zona. Te recomiendo llevar abrigo pesado.' : 'Temperatura agradable, viste ropa cómoda.';
+                    agentDiv.textContent = `Respuesta inesperada de la API: ${JSON.stringify(dataIA)}`;
                 }
 
             } catch (err) {
-                errorDiv.textContent = 'Error: ' + err.message;
+                errorDiv.textContent = 'Error de conexión: ' + err.message;
             } finally {
                 btn.disabled = false;
             }
