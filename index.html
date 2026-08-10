@@ -125,8 +125,8 @@
                 const lon = params.get('lon');
                 const nombreCiudad = params.get('name');
 
-                const urlOpenMeteo = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m&timezone=auto`;
-
+                const urlOpenMeteo = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m&timezone=auto&models=best_match`;
+                
                 const resWeather = await fetch(urlOpenMeteo);
                 const dataWeather = await resWeather.json();
 
