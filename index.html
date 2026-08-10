@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agente Clima - Chillán / Concepción</title>
+    <title>Agente Clima - Ñuble / Bío Bío</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -97,7 +97,7 @@
             <div class="condition" id="condText"></div>
             
             <div class="agent-box">
-                <div class="agent-title">🤖 Recomendación del Agente (IA)</div>
+                <div class="agent-title">🤖 Recomendación del Agente (Qwen IA)</div>
                 <div id="agentRecommendation">Analizando datos meteorológicos...</div>
             </div>
         </div>
@@ -117,7 +117,6 @@
             document.getElementById('weatherDisplay').style.display = 'block';
 
             try {
-                // 1. Obtener datos de Open-Meteo
                 const selectedValue = document.getElementById('citySelect').value;
                 const params = new URLSearchParams(selectedValue);
                 const lat = params.get('lat');
@@ -131,14 +130,12 @@
 
                 const temp = dataWeather.current.temperature_2m;
                 const humedad = dataWeather.current.relative_humidity_2m;
-                const condicion = "Tiempo actual";
 
                 document.getElementById('cityName').textContent = nombreCiudad;
                 document.getElementById('tempC').textContent = `${temp}°C`;
                 document.getElementById('condText').textContent = `Humedad: ${humedad}%`;
 
-                // 2. Consulta directa a la API
-                const promptAgente = `Eres un asistente meteorológico folclórico para la zona de ${nombreCiudad}. Temperatura actual: ${temp}°C. Condición: ${condicion}. Humedad: ${humedad}%. Entrega tu recomendación sobre qué vestir o llevar hoy exclusivamente en forma de una décima poética tradicional (10 versos cortos). Sé directo, creativo y mantén el tono de la zona.`;
+                const promptAgente = `Eres un asistente meteorológico folclórico para la zona de ${nombreCiudad}. Temperatura actual: ${temp}°C. Humedad: ${humedad}%. Entrega tu recomendación sobre qué vestir o llevar hoy exclusivamente en forma de una décima poética tradicional (10 versos octosílabos). Sé directo, creativo y mantén el tono de la zona.`;
 
                 const resIA = await fetch('https://openrouter.ai/api/v1/chat/completions', {
                     method: 'POST',
@@ -157,10 +154,9 @@
                 if (dataIA.choices && dataIA.choices[0] && dataIA.choices[0].message) {
                     agentDiv.textContent = dataIA.choices[0].message.content;
                 } else if (dataIA.error) {
-                    // Si la API responde un error formal, lo mostramos directo
                     agentDiv.textContent = `Error API OpenRouter: ${dataIA.error.message || JSON.stringify(dataIA.error)}`;
                 } else {
-                    agentDiv.textContent = `Respuesta inesperada de la API: ${JSON.stringify(dataIA)}`;
+                    agentDiv.textContent = `Respuesta inesperada: ${JSON.stringify(dataIA)}`;
                 }
 
             } catch (err) {
