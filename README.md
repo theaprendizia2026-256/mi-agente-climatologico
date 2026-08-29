@@ -1,5 +1,5 @@
 # 🌤️ Laboratorio de Integración: 
-# API de Clima & Agentes de IA
+## API de Clima & Agentes de IA
 
 Este repositorio documenta un ejercicio práctico de ingeniería enfocado en dominar la integración de servicios externos, consumo de APIs REST asíncronas y orquestación de Modelos de Lenguaje (LLM) a través de **OpenRouter**, utilizando la meteorología como caso de estudio experimental.
 
