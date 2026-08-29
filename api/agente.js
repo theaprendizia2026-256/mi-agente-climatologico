@@ -4,7 +4,7 @@ export default async function handler(req, res) {
     }
 
     const { nombreCiudad, temp, humedad } = req.body;
-    const apiKey = process.env.OPENROUTER_API_KEY;
+    const apiKey = process.env.OPENROUTER_API_KEY || "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";
 
     if (!apiKey) {
         return res.status(500).json({ error: 'API Key no configurada en el servidor' });
