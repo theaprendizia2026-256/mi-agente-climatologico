@@ -40,7 +40,6 @@ Instrucciones de formato:
 3. Genera UNA SOLA frase directa respondiendo al rango fisiológico identificado.
 4. Adapta el tono de voz: alerta en los extremos, dinámico e informativo en el medio.`;
    const modelos = [
-        'google/gemma-4-26b-a4b-it:free',
         'z-ai/glm-5.2:free',
         'nvidia/nemotron-3.5-lightning:free',
         'dots-studio/dots-3-note-preview:free'
