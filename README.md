@@ -1,35 +1,36 @@
-# 🌤️ Agente Meteorológico Poético (Ñuble / Bío Bío)
+# 🌤️ Laboratorio de Integración: API de Clima & Agentes de IA
 
-Un microagente web minimalista y resiliente que consulta datos meteorológicos en tiempo real y los transforma en recomendaciones de vestimenta mediante **décimas poéticas tradicionales chilenas**, procesadas por modelos de Lenguaje de Gran Escala (LLM) a través de la API de OpenRouter.
-
----
-
-## 📐 Arquitectura del Sistema
-
-El proyecto implementa una arquitectura **Fullstack Client-Side (Serverless & Dependency-Free)** orientada al alto rendimiento y al mínimo consumo de recursos.
-
-1. **Capa de Captura (El Cuerpo):** Consume la API REST de **Open-Meteo** para la obtención de datos meteorológicos precisos (temperatura y humedad relativa) según coordenadas geográficas sin requerir autenticación ni librerías pesadas.
-2. **Capa del Agente (El Cerebro):** Implementa un pipeline de prompt engineering estructurado hacia la API de **OpenRouter**, delegando la generación de inferencia poética al modelo `google/gemma-4-26b-a4b-it:free`.
-3. **Capa de Presentación (UI/UX):** Interfaz ergonómica e híper-liviana desarrollada en **Vanilla HTML5/CSS3**, optimizada bajo un esquema de colores oscuros (*Dark Mode*) para prevenir la fatiga visual y garantizar tiempos de carga sub-segundo.
+Este repositorio documenta un ejercicio práctico de ingeniería enfocado en dominar la integración de servicios externos, consumo de APIs REST asíncronas y orquestación de Modelos de Lenguaje (LLM) a través de **OpenRouter**, utilizando la meteorología como caso de estudio experimental.
 
 ---
 
-## 🛠️ Tecnologías Utilizadas
+## 📐 Arquitectura de Aprendizaje
 
-* **Frontend:** HTML5, CSS3 (Variables CSS, Flexbox), Vanilla JavaScript (ES6+ Async/Await).
-* **APIs Externas:**
-  * [Open-Meteo API](https://open-meteo.com/) — Geolocalización y datos meteorológicos.
-  * [OpenRouter API](https://openrouter.ai/) — Inferencia de LLM en la nube.
-* **Tipografía:** Google Fonts (`Poppins`).
-* **Despliegue:** Render / Vercel (Static Site Hosting).
+El sistema implementa una arquitectura desacoplada para evaluar la comunicación entre servicios de datos en tiempo real y motores de inferencia en la nube:
+
+1. **Capa de Ingesta (Datos Externos):** Consulta directa a la API de **Open-Meteo** para la obtención síncrona de variables meteorológicas clave: temperatura, humedad relativa, velocidad del viento, precipitaciones y presión atmosférica.
+2. **Capa Cognitiva (Orquestación de Agentes):** Conexión vía backend serverless con **OpenRouter**, diseñada para evaluar la respuesta de diversos LLM gratuitos y analizar su comportamiento al procesar datos estructurados en lenguaje natural.
+3. **Capa de Presentación (Interfaz Ligera):** Panel minimalista desarrollado en **Vanilla HTML5, CSS3 y JavaScript puro**, optimizado para garantizar rendimiento sub-segundo y control de red en tiempo real.
 
 ---
 
-## 💡 Prompt Engineering & Lógica Folclórica
+## 🛠️ Stack Tecnológico
 
-El sistema utiliza la estructura poética de la **décima** (10 versos octosílabos con rima consonante) como formato de salida ergonómico y cultural para entregar la sugerencia meteorológica:
+* **Frontend:** HTML5, CSS3 (Variables, Flexbox), Vanilla JavaScript (ES6+ Asíncrono).
+* **Backend Serverless:** Node.js / Serverless Handlers orientados a la gestión de variables de entorno y peticiones HTTP.
+* **APIs e Infraestructura:**
+* [Open-Meteo API](https://open-meteo.com/) — Datos numéricos de la atmósfera.
+* [OpenRouter API](https://openrouter.ai/) — Puerta de enlace para modelos de IA.
+* Vercel / Render — Alojamiento y despliegue estático/serverless.
 
-```javascript
-const promptAgente = `Eres un asistente meteorológico folclórico para la zona de ${nombreCiudad}. 
-Temperatura actual: ${temp}°C. Humedad: ${humedad}%. 
-Entrega tu recomendación sobre qué vestir o llevar hoy exclusivamente en forma de una décima poética tradicional (10 versos octosílabos). Sé directo, creativo y mantén el tono de la zona.`;
+
+
+---
+
+## 💡 Enfoque del Ejercicio
+
+Este proyecto no busca replicar un software meteorológico comercial, sino servir como un entorno controlado de experimentación para:
+
+* Comprender el ciclo de vida de una petición HTTP asíncrona (`fetch`, `async/await`, manejo de errores por red).
+* Evaluar el impacto de suministrar múltiples parámetros físicos duros (*viento, presión, precipitaciones*) en la precisión y contexto de las respuestas generadas por agentes de IA.
+* Dominar la parametrización de prompts orientados a la estructuración de informes técnicos limpios y directos.
