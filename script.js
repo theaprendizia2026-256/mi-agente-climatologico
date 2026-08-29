@@ -45,7 +45,7 @@ async function ejecutarAgente() {
         
         if (dataIA.choices && dataIA.choices[0] && dataIA.choices[0].message) {
                 // Selecciona el encabezado h3 de la tarjeta del agente
-                const headerModelo = document.querySelector('.agent-card h3') || document.querySelector('h3');
+                const titleDiv = document.getElementById('agentTitle');
                 if (headerModelo && dataIA.modeloUsado) {
                     headerModelo.textContent = `Agente de Clima (${dataIA.modeloUsado})`;
                 }
