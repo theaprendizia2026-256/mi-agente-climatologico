@@ -72,7 +72,7 @@ Instrucciones de formato:
                 // Adjuntamos la información del modelo exacto que respondió
                 return res.status(200).json({
                     ...data,
-                    modeloUsado: modelObj.nombre
+                    modeloUsado: modelo.nombre
                 });
             }
         } catch (error) {
