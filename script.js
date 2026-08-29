@@ -43,11 +43,10 @@ async function ejecutarAgente() {
 
         const dataIA = await resIA.json();
         
-        if (dataIA.choices && dataIA.choices[0] && dataIA.choices[0].message) {
-                // Selecciona el encabezado h3 de la tarjeta del agente
+       if (dataIA.choices && dataIA.choices[0] && dataIA.choices[0].message) {
                 const titleDiv = document.getElementById('agentTitle');
-                if (headerModelo && dataIA.modeloUsado) {
-                    headerModelo.textContent = `Agente de Clima (${dataIA.modeloUsado})`;
+                if (titleDiv && dataIA.modeloUsado) {
+                    titleDiv.textContent = `Agente de Clima (${dataIA.modeloUsado})`;
                 }
                 
                 agentDiv.textContent = dataIA.choices[0].message.content;
