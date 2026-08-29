@@ -39,22 +39,42 @@ Instrucciones de formato:
 2. No uses saludos, introducciones ni despedidas (ej. "Hola", "Aquí el reporte").
 3. Genera UNA SOLA frase directa respondiendo al rango fisiológico identificado.
 4. Adapta el tono de voz: alerta en los extremos, dinámico e informativo en el medio.`;
-    try {
-        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${apiKey}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                model: 'google/gemma-4-26b-a4b-it:free',
-                messages: [{ role: 'user', content: promptAgente }]
-            })
-        });
+   const modelos = [
+        'google/gemma-4-26b-a4b-it:free',
+        'z-ai/glm-5.2:free',
+        'nvidia/nemotron-3.5-lightning:free',
+        'dots-studio/dots-3-note-preview:free'
+    ];
 
-        const data = await response.json();
-        return res.status(200).json(data);
-    } catch (error) {
-        return res.status(500).json({ error: error.message });
+    let ultimoError = null;
+
+    for (const modelo of modelos) {
+        try {
+            const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: modelo,
+                    messages: [{ role: 'user', content: promptAgente }]
+                })
+            });
+
+            if (!response.ok) {
+                continue;
+            }
+
+            const data = await response.json();
+
+            if (data.choices && data.choices.length > 0) {
+                return res.status(200).json(data);
+            }
+        } catch (error) {
+            ultimoError = error.message;
+        }
     }
+
+    return res.status(500).json({ error: ultimoError || 'Todos los modelos fallaron en responder' });
 }
