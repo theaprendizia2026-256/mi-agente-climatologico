@@ -40,8 +40,8 @@ Instrucciones de formato:
 2. No uses saludos ni despedidas formales (ej. "Hola", "Buenas noches").
 3. Crea una sola narración fluida y expresiva basada estrictamente en la interpretación fisiológica del rango.`;
    const modelos = [
-        { id: 'google/gemma-4-26b-a4b-it:free', nombre: 'Gemma 4 IA' },
         { id: 'z-ai/glm-5.2:free', nombre: 'GLM 5.2 IA' },
+        { id: 'google/gemma-4-26b-a4b-it:free', nombre: 'Gemma 4 IA' },
         { id: 'nvidia/nemotron-3.5-lightning:free', nombre: 'Nemotron IA' },
         { id: 'dots-studio/dots-3-note-preview:free', nombre: 'Dots 3 IA' }
     ];
