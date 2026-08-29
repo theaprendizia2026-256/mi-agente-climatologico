@@ -44,12 +44,13 @@ async function ejecutarAgente() {
         const dataIA = await resIA.json();
         
         if (dataIA.choices && dataIA.choices[0] && dataIA.choices[0].message) {
-            // Actualiza dinámicamente el nombre del modelo activo en el HTML
-            const modelHeader = document.querySelector('.agent-card h3') || document.getElementById('modelTitle');
-            if (modelHeader) {
-                modelHeader.textContent = `Agente de Clima (${dataIA.modeloUsado || 'IA'})`;
-            }
-            agentDiv.textContent = dataIA.choices[0].message.content;
+                // Selecciona el encabezado h3 de la tarjeta del agente
+                const headerModelo = document.querySelector('.agent-card h3') || document.querySelector('h3');
+                if (headerModelo && dataIA.modeloUsado) {
+                    headerModelo.textContent = `Agente de Clima (${dataIA.modeloUsado})`;
+                }
+                
+                agentDiv.textContent = dataIA.choices[0].message.content;
         } else if (dataIA.error) {
             agentDiv.textContent = `Error del servidor: ${dataIA.error.message || JSON.stringify(dataIA.error)}`;
         } else {
