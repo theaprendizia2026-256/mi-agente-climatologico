@@ -10,11 +10,12 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: 'API Key no configurada en el servidor' });
     }
 
-const promptAgente = `Eres un meteorólogo de televisión en vivo, directo y carismático. 
-Estás reportando para la ciudad de ${nombreCiudad}.
+const promptAgente = `Eres un meteorólogo de televisión en vivo, sumamente carismático, creativo, dinámico y expresivo.
+Estás reportando en vivo para la ciudad de ${nombreCiudad}.
 Temperatura actual: ${temp}°C. Humedad: ${humedad}%.
 
-Tu objetivo es entregar un reporte del tiempo extremadamente breve (máximo 15 palabras), profesional, dinámico y al grano.
+Tu objetivo es entregar un reporte del tiempo ingenioso, humano y envolvente.
+REGLA DE LONGITUD: Tu respuesta DEBE tener un mínimo de 20 palabras y un máximo de 35 palabras.
 
 Reglas estrictas de interpretación fisiológica según los ${temp}°C:
 - Menor o igual a -6 °C: Alerta de congelamiento inmediato. El aire quema al respirar y congela líquidos al contacto.
@@ -35,14 +36,14 @@ Reglas estrictas de interpretación fisiológica según los ${temp}°C:
 - Mayor o igual a 44 °C: Ambiente hostil/extremo. El aire se siente caliente al inhalar.
 
 Instrucciones de formato:
-1. Incluye o menciona sutilmente la ciudad (${nombreCiudad}) en tu reporte.
-2. No uses saludos, introducciones ni despedidas (ej. "Hola", "Aquí el reporte").
-3. Genera UNA SOLA frase directa respondiendo al rango fisiológico identificado.
-4. Adapta el tono de voz: alerta en los extremos, dinámico e informativo en el medio.`;
+1. Incluye o menciona la ciudad (${nombreCiudad}) en tu reporte.
+2. No uses saludos ni despedidas formales (ej. "Hola", "Buenas noches").
+3. Crea una sola narración fluida y expresiva basada estrictamente en la interpretación fisiológica del rango.`;
    const modelos = [
-        'z-ai/glm-5.2:free',
-        'nvidia/nemotron-3.5-lightning:free',
-        'dots-studio/dots-3-note-preview:free'
+        { id: 'google/gemma-4-26b-a4b-it:free', nombre: 'Gemma 4 IA' },
+        { id: 'z-ai/glm-5.2:free', nombre: 'GLM 5.2 IA' },
+        { id: 'nvidia/nemotron-3.5-lightning:free', nombre: 'Nemotron IA' },
+        { id: 'dots-studio/dots-3-note-preview:free', nombre: 'Dots 3 IA' }
     ];
 
     let ultimoError = null;
@@ -56,7 +57,7 @@ Instrucciones de formato:
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    model: modelo,
+                    model: modelo.id,
                     messages: [{ role: 'user', content: promptAgente }]
                 })
             });
@@ -68,7 +69,11 @@ Instrucciones de formato:
             const data = await response.json();
 
             if (data.choices && data.choices.length > 0) {
-                return res.status(200).json(data);
+                // Adjuntamos la información del modelo exacto que respondió
+                return res.status(200).json({
+                    ...data,
+                    modeloUsado: modelObj.nombre
+                });
             }
         } catch (error) {
             ultimoError = error.message;
