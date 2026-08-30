@@ -61,6 +61,23 @@
             background-color: var(--background-color);
         }
 
+        .metrics-list {
+            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            text-align: left;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 12px !important;
+        }
+        .metric-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.95rem;
+        }
+
         .temperature { font-size: 3rem; font-weight: 700; color: var(--primary-color); }
         .condition { font-size: 1.1rem; color: var(--secondary-color); }
         .time-stamp { font-size: 0.9rem; color: var(--secondary-color); margin-top: 5px; font-style: italic; }
