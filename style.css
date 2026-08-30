@@ -105,10 +105,25 @@ button:disabled { background-color: #444444; color: #888888; cursor: not-allowed
 
 .metric-row {
     display: grid;
-    grid-template-columns: 40px 1fr auto;
+    grid-template-columns: 1fr auto 40px;
     align-items: center;
-    text-align: left;
     font-size: 0.95rem;
+}
+
+.metric-row .m-label {
+    text-align: left;
+}
+
+.metric-row .m-val {
+    text-align: right;
+    justify-self: end;
+    padding-right: 15px;
+}
+
+.metric-row .m-icon {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .m-icon {
