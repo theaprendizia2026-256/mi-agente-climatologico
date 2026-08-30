@@ -92,38 +92,45 @@ button:disabled { background-color: #444444; color: #888888; cursor: not-allowed
     color: var(--secondary-color); 
 }
 
+/* DISEÑO CLAVE DE 2 COLUMNAS (Icono + Bloque de Texto alineado) */
 .metrics-grid {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 20px;
     margin: 20px 0;
-    padding: 12px 0;
-    border-top: 1px solid var(--border-color);
-    border-bottom: 1px solid var(--border-color);
+    padding: 15px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .metric-row {
     display: grid;
-    grid-template-columns: 24px 1fr auto;
+    grid-template-columns: 50px 1fr;
     align-items: center;
     text-align: left;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
 }
 
 .m-icon {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
+}
+
+/* El contenedor interno del texto mantiene la separación vertical exacta de la referencia */
+.metric-content, .m-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 }
 
 .m-label {
     color: var(--secondary-color);
-    padding-left: 8px;
 }
 
 .m-val {
     color: var(--primary-color);
     font-weight: 600;
-    text-align: right;
 }
 
 .time-stamp {
