@@ -37,6 +37,15 @@ async function ejecutarAgente() {
         document.getElementById('cityName').textContent = nombreCiudad;
         document.getElementById('tempC').textContent = `${temp}°C`;
         document.getElementById('condText').textContent = `Humedad: ${humedad}%`;
+        
+        // Inyección de los nuevos parámetros en el DOM
+        document.getElementById('apparentTempVal').textContent = apparentTemp;
+        document.getElementById('precipVal').textContent = precipitation;
+        document.getElementById('windVal').textContent = windSpeed;
+        document.getElementById('gustsVal').textContent = windGusts;
+        document.getElementById('pressureVal').textContent = pressure;
+        document.getElementById('uvVal').textContent = uvIndex;
+
         document.getElementById('updateTime').textContent = `Actualizado a las: ${horaFormateada}`;
 
         // 2. Consulta a nuestro Backend Serverless
