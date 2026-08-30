@@ -36,10 +36,8 @@ async function ejecutarAgente() {
 
         document.getElementById('cityName').textContent = nombreCiudad;
         document.getElementById('tempC').textContent = `${temp}°C`;
-        document.getElementById('condText').textContent = `Humedad: ${humedad}%`;
-        
-        // Inyección de los nuevos parámetros en el DOM
-        document.getElementById('apparentTempVal').textContent = apparentTemp;
+        document.getElementById('humVal').textContent = `${humedad}%`;
+        document.getElementById('apparentTempVal').textContent = `${apparentTemp}°C`;
         document.getElementById('precipVal').textContent = precipitation;
         document.getElementById('windVal').textContent = windSpeed;
         document.getElementById('gustsVal').textContent = windGusts;
