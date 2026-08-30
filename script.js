@@ -16,13 +16,20 @@ async function ejecutarAgente() {
         const nombreCiudad = params.get('name');
 
         // 1. Clima directo desde Open-Meteo
-        const urlOpenMeteo = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m&timezone=auto&models=best_match`;
-        
+        const urlOpenMeteo = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,dew_point_2m,precipitation_probability,precipitation,rain,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,surface_pressure,pressure_msl,cloud_cover,uv_index,soil_temperature_0cm,soil_moisture_0_to_1cm&timezone=auto&models=best_match`;        
         const resWeather = await fetch(urlOpenMeteo);
         const dataWeather = await resWeather.json();
 
+        // Debajo de donde lee temp y humedad, agregue la lectura de los nuevos campos del JSON:
         const temp = dataWeather.current.temperature_2m;
         const humedad = dataWeather.current.relative_humidity_2m;
+        const apparentTemp = dataWeather.current.apparent_temperature;
+        const precipitation = dataWeather.current.precipitation;
+        const precipProb = dataWeather.current.precipitation_probability;
+        const windSpeed = dataWeather.current.wind_speed_10m;
+        const windGusts = dataWeather.current.wind_gusts_10m;
+        const pressure = dataWeather.current.surface_pressure;
+        const uvIndex = dataWeather.current.uv_index;
 
         const ahora = new Date();
         const horaFormateada = ahora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -38,7 +45,18 @@ async function ejecutarAgente() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ nombreCiudad, temp, humedad })
+            body: JSON.stringify({ 
+                nombreCiudad, 
+                temp, 
+                humedad, 
+                apparentTemp, 
+                precipitation, 
+                precipProb, 
+                windSpeed, 
+                windGusts, 
+                pressure, 
+                uvIndex 
+            })
         });
 
         const dataIA = await resIA.json();
