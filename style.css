@@ -65,6 +65,43 @@
         .condition { font-size: 1.1rem; color: var(--secondary-color); }
         .time-stamp { font-size: 0.9rem; color: var(--secondary-color); margin-top: 5px; font-style: italic; }
 
+       .metrics-list {
+            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-align: left;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 0;
+        }
+        .metric-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.95rem;
+        }
+        .metric-icon {
+            display: flex;
+            align-items: center;
+            width: 24px;
+        }
+        .metric-label {
+            flex-grow: 1;
+            margin-left: 10px;
+            color: var(--secondary-color);
+        }
+        .metric-value {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        .time-stamp {
+            font-size: 1.05rem;
+            color: var(--secondary-color);
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
         .agent-box {
             margin-top: 20px; padding: 15px;
             background-color: var(--agent-bg);
