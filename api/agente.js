@@ -3,21 +3,38 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Método no permitido' });
     }
 
-    const { nombreCiudad, temp, humedad } = req.body;
+    const { 
+           nombreCiudad, 
+           temp, 
+           humedad, 
+           apparentTemp, 
+           precipitation, 
+           precipProb, 
+           windSpeed, 
+           windGusts, 
+           pressure, 
+           uvIndex 
+    } = req.body;
     const apiKey = process.env.OPENROUTER_API_KEY || "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";
 
     if (!apiKey) {
         return res.status(500).json({ error: 'API Key no configurada en el servidor' });
     }
 
-const promptAgente = `Eres un meteorólogo de televisión en vivo, sumamente carismático, creativo, dinámico y expresivo.
+const promptAgente = `Eres un meteorólogo de televisión en vivo, sumamente carismático, analítico y perspicaz.
 Estás reportando en vivo para la ciudad de ${nombreCiudad}.
-Temperatura actual: ${temp}°C. Humedad: ${humedad}%.
+Parámetros actuales en tiempo real:
+- Temperatura: ${temp}°C (Sensación térmica: ${apparentTemp}°C)
+- Humedad Relativa: ${humedad}%
+- Precipitación: ${precipitation} mm
+- Viento: ${windSpeed} km/h (Ráfagas: ${windGusts} km/h)
+- Presión Atmosférica: ${pressure} hPa
+- Índice UV: ${uvIndex}
 
-Tu objetivo es entregar un reporte del tiempo ingenioso, humano y envolvente.
-REGLA DE LONGITUD: Tu respuesta DEBE tener un mínimo de 20 palabras y un máximo de 25 palabras.
+Tu objetivo es entregar un reporte meteorológico cruzando inteligentemente las combinaciones de datos (por ejemplo: baja temperatura con alta humedad y viento genera sensación de escarcha y frío penetrante; alta presión con baja humedad indica ambiente seco y estable). 
+REGLA DE LONGITUD: Tu respuesta DEBE tener un mínimo de 15 palabras y un máximo de 25 palabras.
 
-Reglas estrictas de interpretación fisiológica según los ${temp}°C:
+Escala fisiológica de referencia según temperatura (${temp}°C):
 - Menor o igual a -6 °C: Alerta de congelamiento inmediato. El aire quema al respirar y congela líquidos al contacto.
 - De -5 °C a -3 °C: Frío severo. Sensación agudamente helada en rostro y vías respiratorias.
 - De -2 °C a 0 °C: Helada activa y congelación de superficie (escarcha, hielo). Tolerable en movimiento pero incómodo.
@@ -37,8 +54,8 @@ Reglas estrictas de interpretación fisiológica según los ${temp}°C:
 
 Instrucciones de formato:
 1. Incluye o menciona la ciudad (${nombreCiudad}) en tu reporte.
-2. No uses saludos ni despedidas formales (ej. "Hola", "Buenas noches").
-3. Crea una sola narración fluida y expresiva basada estrictamente en la interpretación fisiológica del rango.`;
+2. No uses saludos ni despedidas formales (ej. "Hola", "Buenas noches", "Buenos dias") segun corresponda, si dia de 7 hasta 19 horas , el resto es de noche.
+3. Sintetiza en una sola narración fluida cómo interactúan el viento, la lluvia, la presión y la temperatura real sobre el cuerpo.`;
    const modelos = [
         { id: 'z-ai/glm-5.2:free', nombre: 'GLM 5.2 IA' },
         { id: 'google/gemma-4-26b-a4b-it:free', nombre: 'Gemma 4 IA' },
