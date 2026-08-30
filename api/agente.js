@@ -59,8 +59,8 @@ Instrucciones de formato:
    const modelos = [
         { id: 'z-ai/glm-5.2:free', nombre: 'GLM 5.2 IA' },
         { id: 'google/gemma-4-26b-a4b-it:free', nombre: 'Gemma 4 IA' },
-       
-        { id: 'dots-studio/dots-3-note-preview:free', nombre: 'Dots 3 IA' }
+        { id: 'dots-studio/dots-3-note-preview:free', nombre: 'Dots 3 IA' },
+        { id: 'nvidia/nemotron-3.5-lightning:free', nombre: 'Nemotron IA' }
     ];
 
     let ultimoError = null;
