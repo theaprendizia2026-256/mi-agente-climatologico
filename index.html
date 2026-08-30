@@ -22,10 +22,21 @@
 
         <div id="errorMsg" class="error"></div>
 
-        <div id="weatherDisplay" class="weather-info" style="display:none;">
+       <div id="weatherDisplay" class="weather-info" style="display:none;">
             <h2 id="cityName"></h2>
             <div class="temperature" id="tempC"></div>
             <div class="condition" id="condText"></div>
+            
+            <!-- Panel extendido de métricas físicas -->
+            <div class="metrics-grid">
+                <div>Sensación: <span id="apparentTempVal">-</span></div>
+                <div>Precipitación: <span id="precipVal">-</span> mm</div>
+                <div>Viento: <span id="windVal">-</span> km/h</div>
+                <div>Ráfagas: <span id="gustsVal">-</span> km/h</div>
+                <div>Presión: <span id="pressureVal">-</span> hPa</div>
+                <div>Índice UV: <span id="uvVal">-</span></div>
+            </div>
+
             <div class="time-stamp" id="updateTime"></div>
             
             <div class="agent-box">
