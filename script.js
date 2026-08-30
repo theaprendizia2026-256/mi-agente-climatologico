@@ -32,7 +32,12 @@ async function ejecutarAgente() {
         const uvIndex = dataWeather.current.uv_index;
 
         const ahora = new Date();
-        const horaFormateada = ahora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const horaFormateada = ahora.toLocaleTimeString('en-US', { 
+            hour: '2-digit', 
+            minute: '2-digit', 
+            second: '2-digit', 
+            hour12: true 
+         });
 
         document.getElementById('cityName').textContent = nombreCiudad;
         document.getElementById('tempC').textContent = `${temp}°C`;
