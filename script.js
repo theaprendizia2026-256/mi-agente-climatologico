@@ -5,6 +5,7 @@ async function ejecutarAgente() {
     
     btn.disabled = true;
     errorDiv.textContent = '';
+    
     // Configura el estado inicial de carga en ambos elementos
     const titleDiv = document.getElementById('agentTitle');
     if (titleDiv) {
