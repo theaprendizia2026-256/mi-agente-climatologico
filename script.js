@@ -49,8 +49,7 @@ async function ejecutarAgente() {
         document.getElementById('pressureVal').textContent = pressure;
         document.getElementById('uvVal').textContent = uvIndex;
 
-        document.getElementById('updateTime').textContent = `Actualizado a las: ${horaFormateada}`;
-
+        document.getElementById('updateTime').textContent = `Actualizado ${horaFormateada}`;
         // 2. Consulta a nuestro Backend Serverless
         const resIA = await fetch('/api/agente', {
             method: 'POST',
