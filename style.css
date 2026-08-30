@@ -1,7 +1,13 @@
 :root {
     --primary-color: #ffffff;
     --secondary-color: #a0a0a0;
-    --background-color: #0d0d0d;
+    --background-color: #0d0d0d;.metric-row {
+    display: grid;
+    grid-template-columns: 50px 1fr auto; /* Agrandamos el espacio del icono a la izquierda */
+    align-items: center;
+    font-size: 0.95rem;
+    padding: 6px 0; /* Un poquito más de espacio vertical entre filas */
+}
     --card-bg: #161616;
     --agent-bg: #1f1f1f;
     --border-color: #333333;
@@ -104,9 +110,10 @@ button:disabled { background-color: #444444; color: #888888; cursor: not-allowed
 
 .metric-row {
     display: grid;
-    grid-template-columns: 36px 1fr auto;
+    grid-template-columns: 50px 1fr auto; /* Agrandamos el espacio del icono a la izquierda */
     align-items: center;
     font-size: 0.95rem;
+    padding: 6px 0; /* Un poquito más de espacio vertical entre filas */
 }
 
 .m-icon {
