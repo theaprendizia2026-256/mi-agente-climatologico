@@ -32,7 +32,7 @@ Parámetros actuales en tiempo real:
 - Índice UV: ${uvIndex}
 
 Tu objetivo es entregar un reporte meteorológico cruzando inteligentemente las combinaciones de datos (por ejemplo: baja temperatura con alta humedad y viento genera sensación de escarcha y frío penetrante; alta presión con baja humedad indica ambiente seco y estable). 
-REGLA DE LONGITUD: Tu respuesta DEBE tener un mínimo de 15 palabras y un máximo de 25 palabras.
+REGLA DE LONGITUD: Tu respuesta DEBE tener un mínimo de 20 palabras y un máximo de 25 palabras.
 
 Escala fisiológica de referencia según temperatura (${temp}°C):
 - Menor o igual a -6 °C: Alerta de congelamiento inmediato. El aire quema al respirar y congela líquidos al contacto.
