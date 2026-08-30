@@ -22,56 +22,57 @@
 
         <div id="errorMsg" class="error"></div>
 
-       <div id="weatherDisplay" class="weather-info" style="display:none; padding: 25px; border-radius: 20px;">
-    <h2 id="cityName"></h2>
-    <div class="temperature" id="tempC"></div>
-    <div class="condition" id="condText"></div>
-    
-    <div class="metrics-grid">
-        <div class="metric-row">
-            <span class="m-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg></span>
-            <span class="m-label">Sensación</span>
-            <span class="m-val" id="apparentTempVal">-</span>
-        </div>
-        <div class="metric-row">
-            <span class="m-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></span>
-            <span class="m-label">Humedad</span>
-            <span class="m-val" id="humVal">-</span>
-        </div>
-        <div class="metric-row">
-            <span class="m-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2"/></svg></span>
-            <span class="m-label">Precip.</span>
-            <span class="m-val"><span id="precipVal">-</span> mm</span>
-        </div>
-        <div class="metric-row">
-            <span class="m-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19 12H2"/></svg></span>
-            <span class="m-label">Viento</span>
-            <span class="m-val"><span id="windVal">-</span> km/h</span>
-        </div>
-        <div class="metric-row">
-            <span class="m-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19 12H2"/></svg></span>
-            <span class="m-label">Ráfagas</span>
-            <span class="m-val"><span id="gustsVal">-</span> km/h</span>
-        </div>
-        <div class="metric-row">
-            <span class="m-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2"/></svg></span>
-            <span class="m-label">Índice UV</span>
-            <span class="m-val" id="uvVal">-</span>
-        </div>
-        <div class="metric-row">
-            <span class="m-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e2e8f0" stroke-width="2"><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/></svg></span>
-            <span class="m-label">Presión</span>
-            <span class="m-val"><span id="pressureVal">-</span> hPa</span>
-        </div>
-    </div>
-
-    <div class="time-stamp" id="updateTime"></div>
-</div>
+    <div id="weatherDisplay" class="weather-info" style="display:none; padding: 25px; border-radius: 20px;">
+            <h2 id="cityName"></h2>
+            <div class="temperature" id="tempC"></div>
+            <div class="condition" id="condText"></div>
             
+            <div class="metrics-grid">
+                <div class="metric-row">
+                    <span class="m-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg></span>
+                    <span class="m-label">Sensación</span>
+                    <span class="m-val" id="apparentTempVal">-</span>
+                </div>
+                <div class="metric-row">
+                    <span class="m-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></span>
+                    <span class="m-label">Humedad</span>
+                    <span class="m-val" id="humVal">-</span>
+                </div>
+                <div class="metric-row">
+                    <span class="m-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2"/></svg></span>
+                    <span class="m-label">Precip.</span>
+                    <span class="m-val"><span id="precipVal">-</span> mm</span>
+                </div>
+                <div class="metric-row">
+                    <span class="m-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19 12H2"/></svg></span>
+                    <span class="m-label">Viento</span>
+                    <span class="m-val"><span id="windVal">-</span> km/h</span>
+                </div>
+                <div class="metric-row">
+                    <span class="m-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19 12H2"/></svg></span>
+                    <span class="m-label">Ráfagas</span>
+                    <span class="m-val"><span id="gustsVal">-</span> km/h</span>
+                </div>
+                <div class="metric-row">
+                    <span class="m-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2"/></svg></span>
+                    <span class="m-label">Índice UV</span>
+                    <span class="m-val" id="uvVal">-</span>
+                </div>
+                <div class="metric-row">
+                    <span class="m-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e2e8f0" stroke-width="2"><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/></svg></span>
+                    <span class="m-label">Presión</span>
+                    <span class="m-val"><span id="pressureVal">-</span> hPa</span>
+                </div>
+            </div>
+
+            <div class="time-stamp" id="updateTime"></div>
+
+            <!-- El agente ahora vive dentro del contenedor que se oculta al inicio -->
             <div class="agent-box">
                 <div id="agentTitle" class="agent-title">Agente de Clima</div>
-                <div id="agentRecommendation">Analizando datos meteorológicos...</div>
+                <div id="agentRecommendation"></div>
             </div>
+        </div>
         </div>
     </div>
     <script src="script.js"></script>
