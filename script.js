@@ -5,9 +5,14 @@ async function ejecutarAgente() {
     
     btn.disabled = true;
     errorDiv.textContent = '';
+    / Configura el estado inicial de carga en ambos elementos
+    const titleDiv = document.getElementById('agentTitle');
+    if (titleDiv) {
+        titleDiv.textContent = 'Agente de Clima (Esperando conexión...)';
+    }
     agentDiv.textContent = 'Generando informe de clima...';
+    
     document.getElementById('weatherDisplay').style.display = 'block';
-
     try {
         const selectedValue = document.getElementById('citySelect').value;
         const params = new URLSearchParams(selectedValue);
@@ -72,7 +77,7 @@ async function ejecutarAgente() {
 
         const dataIA = await resIA.json();
         
-       if (dataIA.choices && dataIA.choices[0] && dataIA.choices[0].message) {
+        if (dataIA.choices && dataIA.choices[0] && dataIA.choices[0].message) {
                 const titleDiv = document.getElementById('agentTitle');
                 if (titleDiv && dataIA.modeloUsado) {
                     titleDiv.textContent = `Agente de Clima (${dataIA.modeloUsado})`;
